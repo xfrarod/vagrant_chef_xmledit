@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:camel="http://camel.apache.org/schema/spring">
+  <camel:routeContext id="Bloomberg-Input-Routes">
+    <camel:route id="bloomberg-inbound">
+      <camel:from uri="file:///opt/srv/ServiceMix/routes/bloomberg-in"/>
+      <camel:to uri="direct:cas-bloomberg-in"/>
+    </camel:route>
+  </camel:routeContext>
+</beans>

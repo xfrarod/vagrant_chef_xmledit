@@ -1,7 +1,9 @@
 name             'updatexml'
-maintainer       'YOUR_COMPANY_NAME'
-maintainer_email 'YOUR_EMAIL'
-license          'All rights reserved'
-description      'Installs/Configures updatexml'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+maintainer       "APTP Team"
+maintainer_email "f.rodriguez.gonzalez@accenture.com"
+license          "All rights reserved"
+description      "Installs/Configures xmledit"
+long_description 'Installs/Configures xmledit'
 version          '0.1.0'
+
+depends          'xmledit'
