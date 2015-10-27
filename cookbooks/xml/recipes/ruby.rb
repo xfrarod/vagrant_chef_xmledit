@@ -21,10 +21,10 @@
 
 include_recipe 'chef-sugar'
 
-execute 'apt-get update' do
-  ignore_failure true
-  action :nothing
-end.run_action(:run) if 'debian' == node['platform_family']
+#execute 'apt-get update' do
+#  ignore_failure true
+#  action :nothing
+#end.run_action(:run) if 'debian' == node['platform_family']
 
 node.default['build-essential']['compile_time'] = true
 node.default['xml']['compiletime'] = true

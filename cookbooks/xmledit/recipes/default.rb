@@ -18,20 +18,3 @@
 
 include_recipe 'xml::ruby'
 
-xml_edit 'set foo to true' do
-  path '/vagrant/myFile.xml'
-  target '/Employees/Employee/config/foo[text()=\'false\']'
-  fragment '<foo>true</foo>'
-  action :replace
-end
-
-#xml_edit '/vagrant/myFile.xml' do
-#  edits [
-#    {action: :replace, target: '/config/foo', fragment: '<foo>xyzzy</foo>'}
-#,
-#    {action: :append, parent: '/foo', target: '/foo/baz', fragment: '<baz>true</baz>'},
-#    {action: :remove, target: '/foo/hideme'},
-#    {action: :append_if_missing, parent: '/foo', target: '/foo/showme', fragment: '<showme/>'}
-#    ]
-#  action :bulk
-#end
