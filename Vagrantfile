@@ -26,8 +26,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  config.vm.hostname = "myChefTestServer"
 
  config.vm.provision "chef_solo" do |chef|
-# 	chef.add_recipe "createuser"
-# 	chef.add_recipe "xmledit"
+#    chef.add_recipe "apt"
+#    chef.add_recipe "build-essential"
+#    chef.add_recipe "chef-sugar"
+#    chef.add_recipe "libxml2"
+#    chef.add_recipe "nokogiri"
+#    chef.add_recipe "ruby_install"
+#    chef.add_recipe "xml"
+#    chef.add_recipe "xmledit"
+#    chef.add_recipe "yum"
+#    chef.add_recipe "ark"
+#    chef.add_recipe "createuser"
+#    chef.add_recipe "xmledit"
  	chef.add_recipe "updatexml"
  end
  

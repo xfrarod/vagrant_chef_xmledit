@@ -7,3 +7,4 @@ long_description 'Installs/Configures xmledit'
 version          '0.1.0'
 
 depends          'xmledit'
+require          'nokogiri'
