@@ -38,7 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 #    chef.add_recipe "ark"
 #    chef.add_recipe "createuser"
 #    chef.add_recipe "xmledit"
- 	chef.add_recipe "updatexml"
+#   chef.add_recipe "updatexml"
+#	chef.add_recipe "ctc_upgrade"
+    chef.add_recipe "reverseproxy_deploy::RPconf_backup"
  end
  
 end
