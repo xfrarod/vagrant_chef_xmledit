@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:osgi="http://www.springframework.org/schema/osgi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camel="http://camel.apache.org/schema/spring" xmlns:util="http://www.springframework.org/schema/util" xmlns:ctx="http://www.springframework.org/schema/context" xmlns:camel-osgi="http://camel.apache.org/schema/osgi" xsi:schemaLocation="                                                         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd                                                                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd                                                                       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd                                                                              http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd                                                                                     http://camel.apache.org/schema/osgi http://camel.apache.org/schema/osgi/camel-osgi.xsd                                                                                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+  <!--
+              This is the configuration file for routing SWIFT messages into MMI for processing.
+                   We depend on specific SWIFT message type configurations being available, see Swift-configuration.xml
+                       -->
+  <!--
+              OSGI manifest headers, allows this camel configuration to be deployed directly into the deploy folder
+                   -->
+  <manifest>
+           Bundle-Version = 10.7
+                  Bundle-Name = SmartStream :: Cas External Endpoints Configuration
+                         Bundle-SymbolicName = com.smartstream.messaging.cas.routes.endpoints
+                                Bundle-Description = Defines the entry points for swift messages and feeds.
+                                       Bundle-Vendor = office@smartstream-stp.com
+                                              Require-Bundle = com.smartstream.messaging.orchestration
+                                                     Bundle-ManifestVersion: 2
+                                                            Import-Package: org.apache.camel.component.file,org.apache.camel.spring.util,org.apache.commons.dbcp,org.apache.log4j,org.apache.camel
+                                                                </manifest>
+  <!--
+          Tells spring to process any annotations on any of our beans
+            -->
+  <ctx:annotation-config/>
+  <!--
+               ****************************
+                      Accounts feed in
+                            ****************************
+                                -->
+  <camel:routeContext id="Cas-Account-Input-Routes">
+    <camel:route id="account-in-route">
+      <camel:from uri="file:///vol1/srv/ServiceMix/routes/accountIn"/>
+      <!-- <camel:to uri="direct:cas-account-import-in"/> -->
+      <camel:to uri="direct:cas-st-account-import-in"/>
+    </camel:route>
+  </camel:routeContext>
+  <bean id="accountsFeedRoute" class="com.smartstream.messaging.orchestration.camel.PublishedRouteContextInfo">
+    <property name="routeContext" ref="Cas-Account-Input-Routes"/>
+    <property name="camelContextName" value="mmiCamelContext"/>
+  </bean>
+  <osgi:service ref="accountsFeedRoute" interface="com.smartstream.messaging.orchestration.camel.PublishedRouteContextInfo"/>
+  <!--
+               ****************************
+                      Asset Resister Import
+                            ****************************
+                                -->
+  <camel:routeContext id="Cas-Asset-Register-Input-Routes">
+    <camel:route id="asset-register-in-route">
+      <camel:from uri="file:///vol1/srv/ServiceMix/routes/assetIn"/>
+      <!-- To skip XSD validation uncomment the line below -->
+      <!-- <camel:setHeader headerName="skipXsdValidation"><camel:constant>true</camel:constant></camel:setHeader> -->
+      <camel:to uri="direct:cas-asset-import-in"/>
+    </camel:route>
+  </camel:routeContext>
+  <bean id="assetFeedRoute" class="com.smartstream.messaging.orchestration.camel.PublishedRouteContextInfo">
+    <property name="routeContext" ref="Cas-Asset-Register-Input-Routes"/>
+    <property name="camelContextName" value="mmiCamelContext"/>
+  </bean>
+  <osgi:service ref="assetFeedRoute" interface="com.smartstream.messaging.orchestration.camel.PublishedRouteContextInfo"/>
+  <camel-osgi:camelContext trace="false" autoStartup="true">
+    <camel:onException>
+      <camel:exception>java.lang.Exception</camel:exception>
+      <camel:redeliveryPolicy maximumRedeliveries="0"/>
+      <camel:handled>
+        <camel:constant>false</camel:constant>
+      </camel:handled>
+      <camel:to uri="direct:cas-comms-mark-complete"/>
+    </camel:onException>
+    <camel:route id="casSwiftExportDb">
+      <camel:from uri="vm:cas-comms-request-in"/>
+      <!-- camel:transacted/ -->
+      <camel:setHeader headerName="sendersBic">
+        <camel:constant>BICBIC100100</camel:constant>
+      </camel:setHeader>
+      <camel:setHeader headerName="outputDirectory">
+        <camel:constant>file:///vol1/srv/ServiceMix/routes/swift-messages-out</camel:constant>
+      </camel:setHeader>
+      <camel:setHeader headerName="previewDirectory">
+        <camel:constant>file:///vol1/srv/ServiceMix/routes/swift-messages-preview</camel:constant>
+      </camel:setHeader>
+      <camel:bean ref="casSwiftExportProcessor"/>
+      <!--  brought this inline from external route -->
+      <camel:setHeader headerName="cas.queueitem.typeId">
+        <camel:constant>21</camel:constant>
+      </camel:setHeader>
+      <camel:bean ref="com.smartstream.messaging.cas.base.queue.IQueuedItemCoordinator" method="queueBodyToCas"/>
+      <camel:to uri="direct:cas-comms-mark-complete"/>
+    </camel:route>
+    <camel:route id="cas-comms-mark-complete">
+      <camel:from uri="direct:cas-comms-mark-complete"/>
+      <camel:bean ref="com.smartstream.messaging.cas.base.queue.IQueuedItemCoordinator" method="markComplete"/>
+    </camel:route>
+  </camel-osgi:camelContext>
+</beans>

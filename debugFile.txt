@@ -1,0 +1,24 @@
+==> default: Running provisioner: chef_solo...
+==> default: Detected Chef (latest) is already installed
+Generating chef JSON and uploading...
+==> default: Running chef-solo...
+==> default: stdin: is not a tty
+==> default: [2015-11-12T08:11:01+00:00] INFO: Forking chef instance to converge...
+==> default: Starting Chef Client, version 12.5.1
+==> default: [2015-11-12T08:11:01+00:00] INFO: *** Chef 12.5.1 ***
+==> default: [2015-11-12T08:11:01+00:00] INFO: Chef-client pid: 2509
+==> default: [2015-11-12T08:11:02+00:00] INFO: Setting the run_list to ["recipe[updatexml]"] from CLI options
+==> default: [2015-11-12T08:11:02+00:00] INFO: Run List is [recipe[updatexml]]
+==> default: [2015-11-12T08:11:02+00:00] INFO: Run List expands to [updatexml]
+==> default: [2015-11-12T08:11:02+00:00] INFO: Starting Chef Run for myChefTestServer
+==> default: [2015-11-12T08:11:02+00:00] INFO: Running start handlers
+==> default: [2015-11-12T08:11:02+00:00] INFO: Start handlers complete.
+==> default: 
+==> default: Running handlers:
+==> default: [2015-11-12T08:11:02+00:00] ERROR: Running exception handlers
+==> default: Running handlers complete
+==> default: [2015-11-12T08:11:02+00:00] ERROR: Exception handlers complete
+==> default: Chef Client failed. 0 resources updated in 01 seconds
+==> default: [2015-11-12T08:11:02+00:00] FATAL: Stacktrace dumped to /var/chef/cache/chef-stacktrace.out
+==> default: [2015-11-12T08:11:02+00:00] ERROR: cannot load such file -- nokogiri
+==> default: [2015-11-12T08:11:03+00:00] FATAL: Chef::Exceptions::ChildConvergeError: Chef run process exited unsuccessfully (exit code 1)

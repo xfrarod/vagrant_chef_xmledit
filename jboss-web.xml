@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-  <context-root>CA</context-root>
+  <context-root>MyNewContextRoot</context-root>
   <class-loading java2ClassLoadingCompliance="false">
     <loader-repository>
       webconnect.war:loader=webconnect.war
@@ -13,4 +13,3 @@
     <jndi-name>java:/webconnectDS</jndi-name>
   </resource-ref>
 </jboss-web>
-
