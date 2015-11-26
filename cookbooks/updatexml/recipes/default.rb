@@ -25,10 +25,11 @@
 include_recipe 'xmledit'
 require 'nokogiri'
 
+######################################
+###################################### TEST
 
-# ************** cas-endpoint-configuration.xml **************
 
-fileName = "/vagrant/cas-endpoint-configuration.xml"
+fileName = "/vagrant/testfile.xml"
 f = File.open(fileName)
 myXmlDoc = Nokogiri::XML(f)
 nodes = myXmlDoc.xpath("//camel:from | //camel:to | //camel:constant")
@@ -37,7 +38,7 @@ f.close
 
 nodes.each do | node |
 	
-	nodeTxt = "#{node}"
+	nodeTxt = node.to_s
 	nodeTxtTo = nodeTxt.gsub("file:///opt", "file:///vol1")
 	
 	if nodeTxt.include? "file:///"
@@ -47,68 +48,105 @@ nodes.each do | node |
 		puts "#### TO:             #{nodeTxtTo}"
 		puts "#### CONTENT:        #{node.content}"
 		puts "#### ATTR[URI]:      #{node["uri"]}"
-		
+		puts "#### TO_S:           #{node.to_s}"
+
 		xml_edit "** Updating xmlDoc:#{fileName} | value:#{nodeTxt} | xpath:#{node.path}" do
 			path fileName
-			target "#{node.path}"
-			fragment "#{nodeTxtTo}"
+			target node.path
+			fragment nodeTxtTo
 			action :replace
 		end
 		
 	end	
 end
 
+
+## ************** cas-endpoint-configuration.xml **************
+#
+#fileName = "/vagrant/cas-endpoint-configuration.xml"
+#f = File.open(fileName)
+#myXmlDoc = Nokogiri::XML(f)
+#nodes = myXmlDoc.xpath("//camel:from | //camel:to | //camel:constant")
+#
+#f.close
+#
+#nodes.each do | node |
+#	
+#	nodeTxt = "#{node}"
+#	nodeTxtTo = nodeTxt.gsub("file:///opt", "file:///vol1")
+#	
+#	if nodeTxt.include? "file:///"
+#		puts "######################{node.path}"
+#		
+#		puts "#### FROM:           #{nodeTxt}"
+#		puts "#### TO:             #{nodeTxtTo}"
+#		puts "#### CONTENT:        #{node.content}"
+#		puts "#### ATTR[URI]:      #{node["uri"]}"
+#		puts "#### FRAGMENT:       #{node.fragment('')}"
+#
+#		xml_edit "** Updating xmlDoc:#{fileName} | value:#{nodeTxt} | xpath:#{node.path}" do
+#			path fileName
+#			target "#{node.path}"
+#			fragment "#{nodeTxtTo}"
+#			action :replace
+#		end
+#		
+#	end	
+#end
+#
 #xml_edit 'update cas-endpoint-configuration.xml' do
 #	path '/vagrant/cas-endpoint-configuration.xml'
 #	target '//camel:routeContext[@id="Bloomberg-Input-Routes"]/camel:route[@id="bloomberg-inbound"]/camel:from[@uri="file:///opt/srv/ServiceMix/routes/bloomberg-in"]'
 #	fragment '<camel:from uri="file:///vol1/srv/ServiceMix/routes/bloomberg-in"/>'
 #	action :replace
 #end
-
-
-# ********************* cas-features.xml *********************
-
-# Getting nodes from the file
-
-fileName = "/vagrant/cas-features.xml"
-f1 = File.open(fileName)
-myXmlDoc = Nokogiri::XML(f1)
-nodes = myXmlDoc.xpath("//feature/bundle")
-f1.close
-
-# Updating each node
-
-nodes.each do | node |
-
-	nodeTxt = "#{node}"
-	nodeTxtTo = nodeTxt.gsub("file:///opt", "file:///vol1")
-
-	if nodeTxt.include? "file:///"
-		puts "######################{node.path}"
-		
-		puts "#### FROM:           #{nodeTxt}"
-		puts "#### TO:             #{nodeTxtTo}"
-		puts "#### CONTENT:        #{node.content}"
-		puts "#### ATTR[URI]:      #{node["uri"]}"
-		
-		xml_edit "** Updating xmlDoc:#{fileName} | value:#{nodeTxt} | xpath:#{node.path}" do
-			path fileName
-			target "#{node.path}"
-			fragment "#{nodeTxtTo}"
-			action :replace
-		end
-		
-	end
-end
-                                                               
-# ********************* jboss-web.xml *********************
-                                                       
-xml_edit 'update jboss-web.xml' do
-  path '/vagrant/jboss-web.xml'
-  target '/jboss-web/context-root'
-  fragment '<context-root>MyNewContextRoot</context-root>'
-  action :replace
-end
+#
+#
+## ********************* cas-features.xml *********************
+#
+## Getting nodes from the file
+#
+#fileName = "/vagrant/cas-features.xml"
+#f1 = File.open(fileName)
+#myXmlDoc = Nokogiri::XML(f1)
+#nodes = myXmlDoc.xpath("//feature/bundle")
+#f1.close
+#
+## Updating each node
+#
+#nodes.each do | node |
+#
+#	nodeTxt = "#{node}"
+#	nodeTxtTo = nodeTxt.gsub("file:///opt", "file:///vol1")
+#
+#	if nodeTxt.include? "file:///"
+#		puts "######################{node.path}"
+#		
+#		puts "#### FROM:           #{nodeTxt}"
+#		puts "#### TO:             #{nodeTxtTo}"
+#		puts "#### CONTENT:        #{node.content}"
+#		puts "#### ATTR[URI]:      #{node["uri"]}"
+##		puts "#### FRAGMENT:       #{node.fragment('')}"
+#
+#		
+#		xml_edit "** Updating xmlDoc:#{fileName} | value:#{nodeTxt} | xpath:#{node.path}" do
+#			path fileName
+#			target "#{node.path}"
+#			fragment "#{nodeTxtTo}"
+#			action :replace
+#		end
+#		
+#	end
+#end
+#                                                               
+## ********************* jboss-web.xml *********************
+#                                                       
+#xml_edit 'update jboss-web.xml' do
+#  path '/vagrant/jboss-web.xml'
+#  target '/jboss-web/context-root'
+#  fragment '<context-root>MyNewContextRoot</context-root>'
+#  action :replace
+#end
 
 
 #xml_edit '/vagrant/cas-features.xml' do

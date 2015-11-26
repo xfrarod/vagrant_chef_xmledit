@@ -1,0 +1,101 @@
+Inspecting 5 files
+CCCCC
+
+Offenses:
+
+libraries/helpers.rb:2:3: C: Missing top-level module documentation comment.
+  module Helpers
+  ^^^^^^
+libraries/helpers.rb:14:20: C: Unnecessary spacing detected.
+        file.unlink   # deletes the temp file
+                   ^^
+libraries/helpers.rb:31:5: C: Assignment Branch Condition size for warn_if_resource_update_looks_wrong is too high. [17.12/15]
+    def warn_if_resource_update_looks_wrong(name, old_file_contents, new_file_contents, resource_updated_by_last_action)
+    ^^^
+libraries/helpers.rb:31:5: C: Cyclomatic complexity for warn_if_resource_update_looks_wrong is too high. [7/6]
+    def warn_if_resource_update_looks_wrong(name, old_file_contents, new_file_contents, resource_updated_by_last_action)
+    ^^^
+libraries/helpers.rb:31:5: C: Method has too many lines. [13/10]
+    def warn_if_resource_update_looks_wrong(name, old_file_contents, new_file_contents, resource_updated_by_last_action)
+    ^^^
+libraries/helpers.rb:31:5: C: Perceived complexity for warn_if_resource_update_looks_wrong is too high. [8/7]
+    def warn_if_resource_update_looks_wrong(name, old_file_contents, new_file_contents, resource_updated_by_last_action)
+    ^^^
+libraries/helpers.rb:31:81: C: Line is too long. [120/80]
+    def warn_if_resource_update_looks_wrong(name, old_file_contents, new_file_contents, resource_updated_by_last_action)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/helpers.rb:32:81: C: Line is too long. [85/80]
+      if (old_file_contents != new_file_contents) && !resource_updated_by_last_action
+                                                                                ^^^^^
+libraries/helpers.rb:33:81: C: Line is too long. [101/80]
+        Chef::Log.warn("#{name} file should have been changed, but updated_by_last_action? is false")
+                                                                                ^^^^^^^^^^^^^^^^^^^^^
+libraries/helpers.rb:36:81: C: Line is too long. [87/80]
+      elsif (old_file_contents == new_file_contents) && resource_updated_by_last_action
+                                                                                ^^^^^^^
+libraries/helpers.rb:37:81: C: Line is too long. [104/80]
+        Chef::Log.warn("#{name} file should not have been changed, but updated_by_last_action? is true")
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/helpers.rb:40:81: C: Line is too long. [157/80]
+      elsif document_to_string(build_fragment(old_file_contents)) == document_to_string(build_fragment(new_file_contents)) && resource_updated_by_last_action
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/helpers.rb:41:81: C: Line is too long. [83/80]
+        Chef::Log.warn("#{name} file was updated but DOM appears to be equivalent")
+                                                                                ^^^
+libraries/matchers.rb:17:81: C: Line is too long. [89/80]
+    ChefSpec::Matchers::ResourceMatcher.new(:xml_edit, :append_if_missing, resource_name)
+                                                                                ^^^^^^^^^
+libraries/provider.rb:3:5: C: Class has too many lines. [111/100]
+    class XmlEdit < Chef::Provider::LWRPBase
+    ^^^^^
+libraries/provider.rb:3:5: C: Missing top-level class documentation comment.
+    class XmlEdit < Chef::Provider::LWRPBase
+    ^^^^^
+libraries/provider.rb:28:81: C: Line is too long. [108/80]
+        make_edit(:bulk, new_resource.path, new_resource.target, new_resource.parent, new_resource.fragment)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/provider.rb:34:81: C: Line is too long. [84/80]
+          Chef::Log.warn("#{new_resource.name} was given no edits for :bulk action")
+                                                                                ^^^^
+libraries/provider.rb:39:81: C: Line is too long. [94/80]
+          make_edit(edit[:action], edit[:path], edit[:target], edit[:parent], edit[:fragment])
+                                                                                ^^^^^^^^^^^^^^
+libraries/provider.rb:44:81: C: Line is too long. [111/80]
+        make_edit(:replace, new_resource.path, new_resource.target, new_resource.parent, new_resource.fragment)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/provider.rb:64:81: C: Line is too long. [110/80]
+        make_edit(:append, new_resource.path, new_resource.target, new_resource.parent, new_resource.fragment)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/provider.rb:84:81: C: Line is too long. [121/80]
+        make_edit(:append_if_missing, new_resource.path, new_resource.target, new_resource.parent, new_resource.fragment)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/provider.rb:111:81: C: Line is too long. [110/80]
+        make_edit(:remove, new_resource.path, new_resource.target, new_resource.parent, new_resource.fragment)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/provider.rb:127:7: C: Method has too many lines. [14/10]
+      def make_edit(action, path, target, parent, fragment)
+      ^^^
+libraries/provider.rb:144:7: C: Assignment Branch Condition size for write_document is too high. [22.58/15]
+      def write_document
+      ^^^
+libraries/provider.rb:144:7: C: Method has too many lines. [12/10]
+      def write_document
+      ^^^
+libraries/provider.rb:145:60: C: Pass &:read as an argument to open instead of a block.
+        old_file_contents = ::File.open(new_resource.path) { |f| f.read }
+                                                           ^^^^^^^^^^^^^^
+libraries/provider.rb:159:81: C: Line is too long. [85/80]
+        new_resource.updated_by_last_action(true) if resource.updated_by_last_action?
+                                                                                ^^^^^
+libraries/provider.rb:161:81: C: Line is too long. [134/80]
+        warn_if_resource_update_looks_wrong(new_resource.name, old_file_contents, new_file_contents, resource.updated_by_last_action?)
+                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+libraries/resource.rb:3:5: C: Missing top-level class documentation comment.
+    class XmlEdit < Chef::Resource::LWRPBase
+    ^^^^^
+libraries/resource.rb:21:81: C: Line is too long. [85/80]
+      attribute :bind_root_namespace, kind_of: [TrueClass, FalseClass], default: true
+                                                                                ^^^^^
+recipes/default.rb:20:1: C: 1 trailing blank lines detected.
+
+5 files inspected, 32 offenses detected
